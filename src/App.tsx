@@ -30,8 +30,8 @@ function App() {
 }
 
 function Scene() {
-  const [rotation, setRotation] = useState([0, 0, 0]);
-  const [coinPosition, setCoinPosition] = useState([0, 0, 0]);
+  const [rotation, setRotation] = useState<[x: number, y: number, z: number]>([0, 0, 0]);
+  const [coinPosition, setCoinPosition] = useState<[x: number, y: number, z: number]>([0, 0, 0]);
   const { increment } = useContext(CounterContext);
 
   const circlePartsOpacity = 0;
