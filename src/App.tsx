@@ -186,7 +186,7 @@ function VisibleFlyingPoint() {
   });
 
   return (
-    <animated.mesh position={positionSpring}>
+    <animated.mesh position={positionSpring as any}>
       <AnimatedText fillOpacity={opacitySpring} color="white" {...fontProps} anchorX="center" anchorY="middle">
         1
       </AnimatedText>
