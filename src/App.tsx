@@ -166,7 +166,7 @@ function Scene() {
 const AnimatedText = animated(Text);
 
 function VisibleFlyingPoint() {
-  const fontProps = { fontSize: 0.5, letterSpacing: -0.05, lineHeight: 1, "material-toneMapped": false };
+  const fontProps = { fontSize: 0.3, letterSpacing: -0.05, lineHeight: 0.5, "material-toneMapped": false };
 
   const { mouse, viewport } = useThree();
 
