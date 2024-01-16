@@ -1,6 +1,7 @@
-import { useState, useContext, createContext } from "react";
-import { Canvas } from "@react-three/fiber";
-import { useTexture } from "@react-three/drei";
+import { useState, useContext, createContext, useRef } from "react";
+import { Canvas, ThreeEvent, useFrame, useThree } from "@react-three/fiber";
+import { useTexture, Text } from "@react-three/drei";
+import { useSpring, animated } from "@react-spring/three";
 
 //counter context
 const CounterContext = createContext({
@@ -32,6 +33,9 @@ function App() {
 function Scene() {
   const [rotation, setRotation] = useState<[x: number, y: number, z: number]>([0, 0, 0]);
   const [coinPosition, setCoinPosition] = useState<[x: number, y: number, z: number]>([0, 0, 0]);
+
+  const [visibleFlyingPoints, setVisibleFlyingPoints] = useState<number>(0);
+
   const { increment } = useContext(CounterContext);
 
   const circlePartsOpacity = 0;
@@ -41,11 +45,16 @@ function Scene() {
     setCoinPosition([0, 0, 0]);
   };
 
-  const wrapWithTouchEndHandler = (fn: () => void) => {
-    return () => {
+  const setFlyingPointsHandler = () => {
+    setVisibleFlyingPoints((prev) => prev + 1);
+  };
+
+  const wrapWithTouchEndHandler = (fn: (event: ThreeEvent<PointerEvent>) => void) => {
+    return (event: ThreeEvent<PointerEvent>) => {
       increment();
       touchEndHandler();
-      fn();
+      setFlyingPointsHandler();
+      fn(event);
     };
   };
 
@@ -147,7 +156,41 @@ function Scene() {
         <circleGeometry args={[0.7, 32, 32]} />
         <meshStandardMaterial color="black" transparent opacity={circlePartsOpacity} />
       </mesh>
+
+      {visibleFlyingPoints &&
+        Array.from({ length: visibleFlyingPoints }).map((_, index) => <VisibleFlyingPoint key={index} />)}
     </>
+  );
+}
+
+const AnimatedText = animated(Text);
+
+function VisibleFlyingPoint() {
+  const fontProps = { fontSize: 0.5, letterSpacing: -0.05, lineHeight: 1, "material-toneMapped": false };
+
+  const { mouse, viewport } = useThree();
+
+  const x = (mouse.x * viewport.width) / 2;
+  const y = (mouse.y * viewport.height) / 2;
+
+  const { position: positionSpring, opacity: opacitySpring } = useSpring({
+    from: {
+      position: [x, y, 0],
+      opacity: 1,
+    },
+    to: {
+      position: [x, y + 5, 0],
+      opacity: 0,
+    },
+    config: { duration: 1_000 },
+  });
+
+  return (
+    <animated.mesh position={positionSpring}>
+      <AnimatedText fillOpacity={opacitySpring} color="white" {...fontProps} anchorX="center" anchorY="middle">
+        1
+      </AnimatedText>
+    </animated.mesh>
   );
 }
 
