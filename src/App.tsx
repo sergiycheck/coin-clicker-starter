@@ -1,5 +1,5 @@
-import { useState, useContext, createContext, useRef } from "react";
-import { Canvas, ThreeEvent, useFrame, useThree } from "@react-three/fiber";
+import { useState, useContext, createContext } from "react";
+import { Canvas, ThreeEvent, useThree } from "@react-three/fiber";
 import { useTexture, Text } from "@react-three/drei";
 import { useSpring, animated } from "@react-spring/three";
 
@@ -31,8 +31,11 @@ function App() {
 }
 
 function Scene() {
-  const [rotation, setRotation] = useState<[x: number, y: number, z: number]>([0, 0, 0]);
-  const [coinPosition, setCoinPosition] = useState<[x: number, y: number, z: number]>([0, 0, 0]);
+  const [springs, api] = useSpring(() => ({
+    position: [0, 0, 0],
+    rotation: [0, 0, 0],
+    config: { friction: 5, mass: 0.3 },
+  }));
 
   const [visibleFlyingPoints, setVisibleFlyingPoints] = useState<number>(0);
 
@@ -41,8 +44,10 @@ function Scene() {
   const circlePartsOpacity = 0;
 
   const touchEndHandler = () => {
-    setRotation([0, 0, 0]);
-    setCoinPosition([0, 0, 0]);
+    api.start({
+      position: [0, 0, 0],
+      rotation: [0, 0, 0],
+    });
   };
 
   const setFlyingPointsHandler = () => {
@@ -59,39 +64,57 @@ function Scene() {
   };
 
   const bottomRightTouchStartHandler = () => {
-    setRotation([Math.PI / 10, Math.PI / 10, 0]);
+    api.start({
+      rotation: [Math.PI / 10, Math.PI / 10, 0],
+    });
   };
 
   const bottomCenterTouchStartHandler = () => {
-    setRotation([Math.PI / 10, 0, 0]);
+    api.start({
+      rotation: [Math.PI / 10, 0, 0],
+    });
   };
 
   const bottomLeftTouchStartHandler = () => {
-    setRotation([Math.PI / 10, -Math.PI / 10, 0]);
+    api.start({
+      rotation: [Math.PI / 10, -Math.PI / 10, 0],
+    });
   };
 
   const middleRightTouchStartHandler = () => {
-    setRotation([0, Math.PI / 10, 0]);
+    api.start({
+      rotation: [0, Math.PI / 10, 0],
+    });
   };
 
   const middleCenterTouchStartHandler = () => {
-    setCoinPosition([0, 0, -Math.PI / 10]);
+    api.start({
+      position: [0, 0, -Math.PI / 10],
+    });
   };
 
   const middleLeftTouchStartHandler = () => {
-    setRotation([0, -Math.PI / 10, 0]);
+    api.start({
+      rotation: [0, -Math.PI / 10, 0],
+    });
   };
 
   const topRightTouchStartHandler = () => {
-    setRotation([-Math.PI / 10, Math.PI / 10, 0]);
+    api.start({
+      rotation: [-Math.PI / 10, Math.PI / 10, 0],
+    });
   };
 
   const topCenterTouchStartHandler = () => {
-    setRotation([-Math.PI / 10, 0, 0]);
+    api.start({
+      rotation: [-Math.PI / 10, 0, 0],
+    });
   };
 
   const topLeftTouchStartHandler = () => {
-    setRotation([-Math.PI / 10, -Math.PI / 10, 0]);
+    api.start({
+      rotation: [-Math.PI / 10, -Math.PI / 10, 0],
+    });
   };
 
   const colorMap = useTexture("/notecoin.png");
@@ -100,12 +123,15 @@ function Scene() {
     <>
       <ambientLight intensity={2.5} />
       <directionalLight />
-      <group rotation={rotation} position={coinPosition}>
-        <mesh>
+      <animated.group
+        rotation={springs.rotation.to((x, y, z) => [x, y, z])}
+        position={springs.position.to((x, y, z) => [x, y, z])}
+      >
+        <animated.mesh>
           <circleGeometry args={[1.5, 100, 100]} />
           <meshStandardMaterial map={colorMap} />
-        </mesh>
-      </group>
+        </animated.mesh>
+      </animated.group>
 
       <mesh
         position={[0, 0, 0]}
@@ -166,7 +192,13 @@ function Scene() {
 const AnimatedText = animated(Text);
 
 function VisibleFlyingPoint() {
-  const fontProps = { fontSize: 0.3, letterSpacing: -0.05, lineHeight: 0.5, "material-toneMapped": false };
+  const fontProps = {
+    fontSize: 0.35,
+    font: "./Roboto-Bold.ttf",
+    letterSpacing: -0.05,
+    lineHeight: 0.5,
+    "material-toneMapped": false,
+  };
 
   const { mouse, viewport } = useThree();
 
@@ -175,14 +207,14 @@ function VisibleFlyingPoint() {
 
   const { position: positionSpring, opacity: opacitySpring } = useSpring({
     from: {
-      position: [x, y, 0],
+      position: [x, y + 0.5, 1],
       opacity: 1,
     },
     to: {
-      position: [x, y + 5, 0],
+      position: [x, y + 2, 1],
       opacity: 0,
     },
-    config: { duration: 1_000 },
+    config: { duration: 2_000 },
   });
 
   return (
