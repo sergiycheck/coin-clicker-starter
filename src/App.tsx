@@ -41,7 +41,7 @@ function Scene() {
 
   const { increment } = useContext(CounterContext);
 
-  const circlePartsOpacity = 0;
+  const circlePartsOpacity = 0.5;
 
   const touchEndHandler = () => {
     api.start({
@@ -207,14 +207,14 @@ function VisibleFlyingPoint() {
 
   const { position: positionSpring, opacity: opacitySpring } = useSpring({
     from: {
-      position: [x, y + 0.5, 1],
+      position: [x, y - 0.2, 1],
       opacity: 1,
     },
     to: {
       position: [x, y + 2, 1],
       opacity: 0,
     },
-    config: { duration: 2_000 },
+    config: { duration: 700, tension: 500, friction: 10, mass: 100 },
   });
 
   return (
