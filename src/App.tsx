@@ -1,4 +1,4 @@
-import { useState, useContext, createContext } from "react";
+import { useState, useContext, createContext, useEffect } from "react";
 import { Canvas, ThreeEvent, useThree } from "@react-three/fiber";
 import { useTexture, Text } from "@react-three/drei";
 import { useSpring, animated } from "@react-spring/three";
@@ -32,10 +32,17 @@ function App() {
 
 function Scene() {
   const [springs, api] = useSpring(() => ({
-    position: [0, 0, 0],
+    position: [0, -0.5, 1],
     rotation: [0, 0, 0],
     config: { friction: 5, mass: 0.3 },
   }));
+
+  useEffect(() => {
+    api.start({
+      position: [0, 0, 0],
+      rotation: [0, 0, 0],
+    });
+  }, [api]);
 
   const [visibleFlyingPoints, setVisibleFlyingPoints] = useState<number>(0);
 
