@@ -41,8 +41,6 @@ function Scene() {
 
   const { increment } = useContext(CounterContext);
 
-  const circlePartsOpacity = 0.5;
-
   const touchEndHandler = () => {
     api.start({
       position: [0, 0, 0],
@@ -119,6 +117,9 @@ function Scene() {
 
   const colorMap = useTexture("/notecoin.png");
 
+  const circlePartsOpacity = 0;
+  const MathPIVision = 4;
+
   return (
     <>
       <ambientLight intensity={2.5} />
@@ -133,55 +134,89 @@ function Scene() {
         </animated.mesh>
       </animated.group>
 
-      <mesh
-        position={[0, 0, 0]}
-        onPointerDown={wrapWithTouchEndHandler(topRightTouchStartHandler)}
-        onPointerUp={touchEndHandler}
-        onPointerLeave={touchEndHandler}
-      >
-        <circleGeometry args={[1.5, 32, 0, Math.PI / 2]} />
-        <meshStandardMaterial color="blue" transparent opacity={circlePartsOpacity} />
-      </mesh>
+      <group position={[0, 0, 0]} rotation={[0, 0, -0.36]}>
+        <mesh
+          onPointerDown={wrapWithTouchEndHandler(topRightTouchStartHandler)}
+          onPointerUp={touchEndHandler}
+          onPointerLeave={touchEndHandler}
+        >
+          <circleGeometry args={[1.5, 32, Math.PI / MathPIVision, Math.PI / MathPIVision]} />
+          <meshStandardMaterial color="#ff0000" transparent opacity={circlePartsOpacity} />
+        </mesh>
 
-      <mesh
-        position={[0, 0, 0]}
-        onPointerDown={wrapWithTouchEndHandler(bottomRightTouchStartHandler)}
-        onPointerUp={touchEndHandler}
-        onPointerLeave={touchEndHandler}
-      >
-        <circleGeometry args={[1.5, 32, -Math.PI / 2, Math.PI / 2]} />
-        <meshStandardMaterial color="green" transparent opacity={circlePartsOpacity} />
-      </mesh>
+        <mesh
+          onPointerDown={wrapWithTouchEndHandler(middleRightTouchStartHandler)}
+          onPointerUp={touchEndHandler}
+          onPointerLeave={touchEndHandler}
+        >
+          <circleGeometry args={[1.5, 32, (-Math.PI / MathPIVision) * 8, Math.PI / MathPIVision]} />
+          <meshStandardMaterial color="#00ff00" transparent opacity={circlePartsOpacity} />
+        </mesh>
 
-      <mesh
-        position={[0, 0, 0]}
-        onPointerDown={wrapWithTouchEndHandler(bottomLeftTouchStartHandler)}
-        onPointerUp={touchEndHandler}
-        onPointerLeave={touchEndHandler}
-      >
-        <circleGeometry args={[1.5, 32, Math.PI, Math.PI / 2]} />
-        <meshStandardMaterial color="red" transparent opacity={circlePartsOpacity} />
-      </mesh>
+        <mesh
+          onPointerDown={wrapWithTouchEndHandler(bottomRightTouchStartHandler)}
+          onPointerUp={touchEndHandler}
+          onPointerLeave={touchEndHandler}
+        >
+          <circleGeometry args={[1.5, 32, -Math.PI / MathPIVision, Math.PI / MathPIVision]} />
+          <meshStandardMaterial color="#0000ff" transparent opacity={circlePartsOpacity} />
+        </mesh>
 
-      <mesh
-        position={[0, 0, 0]}
-        onPointerDown={wrapWithTouchEndHandler(topLeftTouchStartHandler)}
-        onPointerUp={touchEndHandler}
-        onPointerLeave={touchEndHandler}
-      >
-        <circleGeometry args={[1.5, 32, Math.PI / 2, Math.PI / 2]} />
-        <meshStandardMaterial color="gray" transparent opacity={circlePartsOpacity} />
-      </mesh>
+        <mesh
+          onPointerDown={wrapWithTouchEndHandler(bottomCenterTouchStartHandler)}
+          onPointerUp={touchEndHandler}
+          onPointerLeave={touchEndHandler}
+        >
+          <circleGeometry args={[1.5, 32, (-Math.PI / MathPIVision) * 2, Math.PI / MathPIVision]} />
+          <meshStandardMaterial color="#00b7ff" transparent opacity={circlePartsOpacity} />
+        </mesh>
 
-      <mesh
-        position={[0, 0, 0]}
-        onPointerDown={wrapWithTouchEndHandler(middleCenterTouchStartHandler)}
-        onPointerUp={touchEndHandler}
-        onPointerLeave={touchEndHandler}
-      >
-        <circleGeometry args={[0.7, 32, 32]} />
-        <meshStandardMaterial color="black" transparent opacity={circlePartsOpacity} />
-      </mesh>
+        <mesh
+          onPointerDown={wrapWithTouchEndHandler(bottomLeftTouchStartHandler)}
+          onPointerUp={touchEndHandler}
+          onPointerLeave={touchEndHandler}
+        >
+          <circleGeometry args={[1.5, 32, (-Math.PI / MathPIVision) * 3, Math.PI / MathPIVision]} />
+          <meshStandardMaterial color="#ff00ff" transparent opacity={circlePartsOpacity} />
+        </mesh>
+
+        <mesh
+          onPointerDown={wrapWithTouchEndHandler(middleLeftTouchStartHandler)}
+          onPointerUp={touchEndHandler}
+          onPointerLeave={touchEndHandler}
+        >
+          <circleGeometry args={[1.5, 32, (-Math.PI / MathPIVision) * 4, Math.PI / MathPIVision]} />
+          <meshStandardMaterial color="#00ffff" transparent opacity={circlePartsOpacity} />
+        </mesh>
+
+        <mesh
+          onPointerDown={wrapWithTouchEndHandler(topLeftTouchStartHandler)}
+          onPointerUp={touchEndHandler}
+          onPointerLeave={touchEndHandler}
+        >
+          <circleGeometry args={[1.5, 32, (-Math.PI / MathPIVision) * 5, Math.PI / MathPIVision]} />
+          <meshStandardMaterial color="#ff8000" transparent opacity={circlePartsOpacity} />
+        </mesh>
+
+        <mesh
+          onPointerDown={wrapWithTouchEndHandler(topCenterTouchStartHandler)}
+          onPointerUp={touchEndHandler}
+          onPointerLeave={touchEndHandler}
+        >
+          <circleGeometry args={[1.5, 32, (-Math.PI / MathPIVision) * 6, Math.PI / MathPIVision]} />
+          <meshStandardMaterial color="#8000ff" transparent opacity={circlePartsOpacity} />
+        </mesh>
+
+        <mesh
+          position={[0, 0, 0]}
+          onPointerDown={wrapWithTouchEndHandler(middleCenterTouchStartHandler)}
+          onPointerUp={touchEndHandler}
+          onPointerLeave={touchEndHandler}
+        >
+          <circleGeometry args={[0.7, 32, 32]} />
+          <meshStandardMaterial color="black" transparent opacity={circlePartsOpacity} />
+        </mesh>
+      </group>
 
       {visibleFlyingPoints &&
         Array.from({ length: visibleFlyingPoints }).map((_, index) => <VisibleFlyingPoint key={index} />)}
