@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("./Roboto-Bold.ttf");
-
 @layer utilities {
   html,
   body,

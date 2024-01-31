@@ -125,6 +125,7 @@ function Scene() {
       <ambientLight intensity={2.5} />
       <directionalLight />
       <animated.group
+        // @ts-expect-error rotation is not typed
         rotation={springs.rotation.to((x, y, z) => [x, y, z])}
         position={springs.position.to((x, y, z) => [x, y, z])}
       >
