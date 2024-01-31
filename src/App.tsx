@@ -32,16 +32,22 @@ function App() {
 
 function Scene() {
   const [springs, api] = useSpring(() => ({
-    position: [0, -0.5, 1],
+    position: [0, -0.5, 0.5],
     rotation: [0, 0, 0],
     config: { friction: 5, mass: 0.3 },
   }));
 
   useEffect(() => {
-    api.start({
-      position: [0, 0, 0],
-      rotation: [0, 0, 0],
-    });
+    const timeout = setTimeout(() => {
+      api.start({
+        position: [0, 0, 0],
+        rotation: [0, 0, 0],
+      });
+    }, 300);
+
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [api]);
 
   const [visibleFlyingPoints, setVisibleFlyingPoints] = useState<number>(0);
