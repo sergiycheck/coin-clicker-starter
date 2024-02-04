@@ -35,7 +35,7 @@ function App() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 w-full">
+      <div className="absolute bottom-0 w-full max-w-3xl translate-x-[-50%] left-[50%]">
         <div className="max-w-4xl w-full mx-auto flex items-center justify-between p-2">
           <div className="flex flex-col">
             <div className="flex space-x-2 w-fit items-center">
