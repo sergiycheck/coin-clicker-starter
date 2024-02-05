@@ -13,16 +13,26 @@ function App() {
   const rang = "Silver";
 
   return (
-    <div className="flex flex-col h-full relative select-none p-2">
-      <div className="absolute translate-x-[-50%] left-[50%] max-w-3xl w-full">
+    <div className="flex flex-col h-full relative select-none ">
+      {/* gradient background */}
+      <div
+        className="absolute top-0 left-0 right-0 bottom-0 
+        overflow-hidden"
+        style={{
+          background: "linear-gradient(to top, #354175 -80%, #000 100%)",
+        }}
+      >
+        <div
+          className={`absolute h-[369px] w-[369px] translate-x-[-50%] left-[50%] 
+            translate-y-[-50%] top-[50%] rounded-full bg-[#757E9B] blur-[50px]`}
+        ></div>
+      </div>
+
+      {/* header */}
+      <div className="absolute translate-x-[-50%] left-[50%] max-w-3xl w-full p-2">
         <div className="flex flex-col space-y-2">
           <div className="rounded bg-zinc-700 p-2 flex justify-center items-center ">
-            <div
-              className="flex items-center space-x-1"
-              onClick={() => {
-                console.log("Join squad");
-              }}
-            >
+            <div className="flex items-center space-x-1">
               <p className="text-md">Join squad</p>
               <FaChevronRight className="text-sm  text-gray-400" />
             </div>
@@ -61,7 +71,11 @@ function App() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 w-full max-w-3xl translate-x-[-50%] left-[50%] mb-2 flex flex-col space-y-3">
+      {/* footer */}
+      <div
+        className="absolute bottom-0 w-full max-w-3xl translate-x-[-50%] left-[50%] 
+         flex flex-col space-y-3 p-2"
+      >
         <div className="max-w-4xl w-full mx-auto flex items-center justify-between p-2">
           <div className="flex flex-col">
             <div className="flex space-x-2 w-fit items-center">
