@@ -13,9 +13,9 @@ function App() {
   const rang = "Silver";
 
   return (
-    <div className="flex flex-col h-full relative select-none px-2">
+    <div className="flex flex-col h-full relative select-none p-2">
       <div className="absolute translate-x-[-50%] left-[50%] max-w-3xl w-full">
-        <div className="flex flex-col space-y-2 mt-2">
+        <div className="flex flex-col space-y-2">
           <div className="rounded bg-zinc-700 p-2 flex justify-center items-center ">
             <div
               className="flex items-center space-x-1"
@@ -61,7 +61,7 @@ function App() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 w-full max-w-3xl translate-x-[-50%] left-[50%]">
+      <div className="absolute bottom-0 w-full max-w-3xl translate-x-[-50%] left-[50%] mb-2 flex flex-col space-y-3">
         <div className="max-w-4xl w-full mx-auto flex items-center justify-between p-2">
           <div className="flex flex-col">
             <div className="flex space-x-2 w-fit items-center">
@@ -103,6 +103,15 @@ function App() {
               <p className="text-xs">boosts</p>
             </div>
           </div>
+        </div>
+
+        <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+          <div
+            className=" h-2.5 rounded-full bg-gradient-to-r from-zinc-800/5 to-zinc-300"
+            style={{
+              width: "100%",
+            }}
+          ></div>
         </div>
       </div>
 
