@@ -50,57 +50,59 @@ export function Scene() {
     };
   };
 
+  const changableRotationConstant = Math.PI / 20;
+
   const bottomRightTouchStartHandler = () => {
     api.start({
-      rotation: [Math.PI / 10, Math.PI / 10, 0],
+      rotation: [changableRotationConstant, changableRotationConstant, 0],
     });
   };
 
   const bottomCenterTouchStartHandler = () => {
     api.start({
-      rotation: [Math.PI / 10, 0, 0],
+      rotation: [changableRotationConstant, 0, 0],
     });
   };
 
   const bottomLeftTouchStartHandler = () => {
     api.start({
-      rotation: [Math.PI / 10, -Math.PI / 10, 0],
+      rotation: [changableRotationConstant, -changableRotationConstant, 0],
     });
   };
 
   const middleRightTouchStartHandler = () => {
     api.start({
-      rotation: [0, Math.PI / 10, 0],
+      rotation: [0, changableRotationConstant, 0],
     });
   };
 
   const middleCenterTouchStartHandler = () => {
     api.start({
-      position: [0, -0.7, -Math.PI / 10],
+      position: [0, -0.7, -changableRotationConstant],
     });
   };
 
   const middleLeftTouchStartHandler = () => {
     api.start({
-      rotation: [0, -Math.PI / 10, 0],
+      rotation: [0, -changableRotationConstant, 0],
     });
   };
 
   const topRightTouchStartHandler = () => {
     api.start({
-      rotation: [-Math.PI / 10, Math.PI / 10, 0],
+      rotation: [-changableRotationConstant, changableRotationConstant, 0],
     });
   };
 
   const topCenterTouchStartHandler = () => {
     api.start({
-      rotation: [-Math.PI / 10, 0, 0],
+      rotation: [-changableRotationConstant, 0, 0],
     });
   };
 
   const topLeftTouchStartHandler = () => {
     api.start({
-      rotation: [-Math.PI / 10, -Math.PI / 10, 0],
+      rotation: [-changableRotationConstant, -changableRotationConstant, 0],
     });
   };
 
