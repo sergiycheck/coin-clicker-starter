@@ -6,7 +6,7 @@ import { CounterContext } from "./counter-context";
 
 export function Scene() {
   const [springs, api] = useSpring(() => ({
-    position: [0, -0.5, 0.5],
+    position: [0, -0.9, 0.5],
     rotation: [0, 0, 0],
     config: { friction: 5, mass: 0.3 },
   }));
@@ -14,7 +14,7 @@ export function Scene() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       api.start({
-        position: [0, 0, 0],
+        position: [0, -0.7, 0],
         rotation: [0, 0, 0],
       });
     }, 300);
@@ -30,7 +30,7 @@ export function Scene() {
 
   const touchEndHandler = () => {
     api.start({
-      position: [0, 0, 0],
+      position: [0, -0.7, 0],
       rotation: [0, 0, 0],
     });
   };
@@ -76,7 +76,7 @@ export function Scene() {
 
   const middleCenterTouchStartHandler = () => {
     api.start({
-      position: [0, 0, -Math.PI / 10],
+      position: [0, -0.7, -Math.PI / 10],
     });
   };
 
@@ -124,7 +124,7 @@ export function Scene() {
         </animated.mesh>
       </animated.group>
 
-      <group position={[0, 0, 0]} rotation={[0, 0, -0.36]}>
+      <group position={[0, -0.7, 0]} rotation={[0, 0, -0.36]}>
         <mesh
           onPointerDown={wrapWithTouchEndHandler(topRightTouchStartHandler)}
           onPointerUp={touchEndHandler}
@@ -276,7 +276,6 @@ export function Scene() {
         </mesh>
 
         <mesh
-          position={[0, 0, 0]}
           onPointerDown={wrapWithTouchEndHandler(middleCenterTouchStartHandler)}
           onPointerUp={touchEndHandler}
           onPointerLeave={touchEndHandler}

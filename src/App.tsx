@@ -32,7 +32,7 @@ function App() {
       >
         <div
           className={`absolute h-[369px] w-[369px] translate-x-[-50%] left-[50%] 
-            translate-y-[-50%] top-[50%] rounded-full bg-[#757E9B] blur-[50px]`}
+            translate-y-[-70%] top-[70%] rounded-full bg-[#757E9B] blur-[50px]`}
         ></div>
       </div>
 
