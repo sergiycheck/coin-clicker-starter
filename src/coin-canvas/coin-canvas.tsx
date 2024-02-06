@@ -335,7 +335,7 @@ export function VisibleFlyingPoint({ item }: { item: number }) {
         anchorX="center"
         anchorY="middle"
       >
-        1
+        2
       </AnimatedText>
     </animated.mesh>
   );

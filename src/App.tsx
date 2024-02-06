@@ -7,7 +7,15 @@ import { FaChevronRight } from "react-icons/fa6";
 
 function App() {
   const [count, setCount] = useState(10_000_000_000);
-  const increment = () => setTimeout(() => setCount((prev) => prev + 1), 500);
+  const increment = () => {
+    setTimeout(() => {
+      setCount((prev) => prev + 1);
+
+      setTimeout(() => {
+        setCount((prev) => prev + 1);
+      }, 500);
+    }, 500);
+  };
 
   const place = 161_270;
   const rang = "Silver";
