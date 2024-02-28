@@ -1,24 +1,66 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Scene } from "./coin-canvas/coin-canvas";
-import { CounterContext } from "./coin-canvas/counter-context";
+import useWebSocket from "react-use-websocket";
 
 import { FaChevronRight } from "react-icons/fa6";
+import { CounterContext } from "./coin-canvas/counter-context";
+import { Scene } from "./coin-canvas/coin-canvas";
+
+type User = {
+  id: string;
+  userName: string;
+  connectionId: string; // ipv4Address | null
+  coinCounter: number;
+};
+
+const socketUrl = "wss://6ri9wdx49c.execute-api.us-east-1.amazonaws.com/dev";
 
 function App() {
-  const [count, setCount] = useState(10_000_000_000);
-  const increment = () => {
-    setTimeout(() => {
-      setCount((prev) => prev + 1);
-
-      setTimeout(() => {
-        setCount((prev) => prev + 1);
-      }, 500);
-    }, 500);
-  };
-
   const place = 161_270;
   const rang = "Silver";
+  const incrementValue = 20;
+  const userName = "userName1";
+
+  const [user, setUser] = useState<User>();
+  const [count, setCount] = useState(0);
+
+  const { sendMessage, sendJsonMessage, lastJsonMessage } = useWebSocket(socketUrl);
+
+  const increment = () => {
+    if (!user) return;
+
+    setCount((prev) => prev + incrementValue);
+
+    sendJsonMessage({
+      action: "increaseCounterHandler",
+      id: user.id,
+      incrementValue,
+    });
+  };
+
+  useEffect(() => {
+    const jsonMessage = lastJsonMessage as any;
+
+    switch (jsonMessage?.action) {
+      case "getUserByUserName":
+        setUser(jsonMessage?.user);
+        setCount(jsonMessage?.user.coinCounter);
+        break;
+
+      case "increaseCounter":
+        setCount(jsonMessage?.counter.coinCounter);
+        break;
+
+      default:
+        break;
+    }
+  }, [lastJsonMessage]);
+
+  useEffect(() => {
+    if (!user) {
+      sendJsonMessage({ action: "getUserHandler", userName });
+    }
+  }, [user, sendJsonMessage, sendMessage]);
 
   return (
     <div className="flex flex-col h-full relative select-none ">
@@ -56,17 +98,9 @@ function App() {
 
             <div className="flex justify-center items-center space-x-3">
               <div className="flex items-center justify-center relative">
-                <img
-                  src="/icons/left-wreath.svg"
-                  alt="left wreath"
-                  className="w-[30px]"
-                />
+                <img src="/icons/left-wreath.svg" alt="left wreath" className="w-[30px]" />
                 <div>{place.toLocaleString("en-US").concat("th")}</div>
-                <img
-                  className="w-[30px]"
-                  src="/icons/right-wreath.svg"
-                  alt="left wreath"
-                />
+                <img className="w-[30px]" src="/icons/right-wreath.svg" alt="left wreath" />
               </div>
 
               <p className="text-sm">·</p>
@@ -109,12 +143,7 @@ function App() {
             </div>
             <div className="flex items-center space-x-3">
               <div className=" flex flex-col items-center gap-1">
-                <img
-                  src="/notecoin.png"
-                  alt="earn notecoin"
-                  width={20}
-                  height={20}
-                />
+                <img src="/notecoin.png" alt="earn notecoin" width={20} height={20} />
                 <p className="text-xs">earn</p>
               </div>
               <div className="inline-block h-[30px] w-[0.3px] bg-gray-100/20 "></div>
@@ -139,7 +168,7 @@ function App() {
 
       <CounterContext.Provider value={{ count, increment }}>
         <Canvas>
-          <Scene />
+          <Scene incrementValue={incrementValue} />
         </Canvas>
       </CounterContext.Provider>
     </div>
