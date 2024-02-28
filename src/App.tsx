@@ -2,6 +2,7 @@ import { useState, useContext, createContext, useEffect } from "react";
 import { Canvas, ThreeEvent, useThree } from "@react-three/fiber";
 import { useTexture, Text } from "@react-three/drei";
 import { useSpring, animated } from "@react-spring/three";
+import useWebSocket from "react-use-websocket";
 
 //counter context
 const CounterContext = createContext({
@@ -9,9 +10,52 @@ const CounterContext = createContext({
   increment: () => {},
 });
 
+type User = {
+  id: string;
+  userName: string;
+  connectionId: string; // ipv4Address | null
+  coinCounter: number;
+};
+
+const socketUrl = "wss://6ri9wdx49c.execute-api.us-east-1.amazonaws.com/dev";
+
 function App() {
-  const [count, setCount] = useState(10_000_000_000);
-  const increment = () => setCount((prev) => prev + 1);
+  const [user, setUser] = useState<User>();
+  const [count, setCount] = useState(0);
+
+  const { sendMessage, sendJsonMessage, lastJsonMessage } = useWebSocket(socketUrl);
+
+  const increment = () => {
+    sendJsonMessage({
+      action: "increaseCounterHandler",
+      id: "e7cec2cd-e555-4d2f-8368-e9ea6cabe667",
+      incrementValue: 20,
+    });
+  };
+
+  useEffect(() => {
+    const jsonMessage = lastJsonMessage as any;
+
+    switch (jsonMessage?.action) {
+      case "getUserByUserName":
+        setUser(jsonMessage?.user);
+        setCount(jsonMessage?.user.coinCounter);
+        break;
+
+      case "increaseCounter":
+        setCount(jsonMessage?.counter.coinCounter);
+        break;
+
+      default:
+        break;
+    }
+  }, [lastJsonMessage]);
+
+  useEffect(() => {
+    if (!user) {
+      sendJsonMessage({ action: "getUserHandler", userName: "userName1" });
+    }
+  }, [user, sendJsonMessage, sendMessage]);
 
   return (
     <div className="flex flex-col h-full relative select-none pointer-events-none">
