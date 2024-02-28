@@ -32,6 +32,9 @@ dependencies:
   react-icons:
     specifier: ^5.0.1
     version: 5.0.1(react@18.2.0)
+  react-use-websocket:
+    specifier: ^4.8.0
+    version: 4.8.0(react-dom@18.2.0)(react@18.2.0)
   three:
     specifier: ^0.160.0
     version: 0.160.0
@@ -2749,6 +2752,16 @@ packages:
       react-dom: '>=16.13'
     dependencies:
       debounce: 1.2.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /react-use-websocket@4.8.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-pMIaGGkUY5tGjncsGqJi+0X1gT32NEowrvO9BUBQ8k5Q30V80NAX3ZgRIco1QBAycYGhl6bLocwLEVNcdnGKmA==}
+    peerDependencies:
+      react: '>= 18.0.0'
+      react-dom: '>= 18.0.0'
+    dependencies:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
