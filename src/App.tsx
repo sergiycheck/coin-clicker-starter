@@ -19,6 +19,7 @@ function App() {
   const place = 161_270;
   const rang = "Silver";
   const incrementValue = 20;
+  const userName = "userName1";
 
   const [user, setUser] = useState<User>();
   const [count, setCount] = useState(0);
@@ -55,7 +56,7 @@ function App() {
 
   useEffect(() => {
     if (!user) {
-      sendJsonMessage({ action: "getUserHandler", userName: "userName1" });
+      sendJsonMessage({ action: "getUserHandler", userName });
     }
   }, [user, sendJsonMessage, sendMessage]);
 
@@ -165,7 +166,7 @@ function App() {
 
       <CounterContext.Provider value={{ count, increment }}>
         <Canvas>
-          <Scene />
+          <Scene incrementValue={incrementValue} />
         </Canvas>
       </CounterContext.Provider>
     </div>

@@ -1,10 +1,10 @@
-import { useState, useContext, createContext, useEffect } from "react";
-import { Canvas, ThreeEvent, useThree } from "@react-three/fiber";
+import { useState, useContext, useEffect } from "react";
+import { ThreeEvent, useThree } from "@react-three/fiber";
 import { useTexture, Text } from "@react-three/drei";
 import { useSpring, animated } from "@react-spring/three";
 import { CounterContext } from "./counter-context";
 
-export function Scene() {
+export function Scene({ incrementValue }: { incrementValue: number }) {
   const [springs, api] = useSpring(() => ({
     position: [0, -0.9, 0.5],
     rotation: [0, 0, 0],
@@ -39,9 +39,7 @@ export function Scene() {
     setVisibleFlyingPoints((prev) => prev + 1);
   };
 
-  const wrapWithTouchEndHandler = (
-    fn: (event: ThreeEvent<PointerEvent>) => void
-  ) => {
+  const wrapWithTouchEndHandler = (fn: (event: ThreeEvent<PointerEvent>) => void) => {
     return (event: ThreeEvent<PointerEvent>) => {
       increment();
       touchEndHandler();
@@ -132,14 +130,8 @@ export function Scene() {
           onPointerUp={touchEndHandler}
           onPointerLeave={touchEndHandler}
         >
-          <circleGeometry
-            args={[1.5, 32, Math.PI / MathPIVision, Math.PI / MathPIVision]}
-          />
-          <meshStandardMaterial
-            color="#ff0000"
-            transparent
-            opacity={circlePartsOpacity}
-          />
+          <circleGeometry args={[1.5, 32, Math.PI / MathPIVision, Math.PI / MathPIVision]} />
+          <meshStandardMaterial color="#ff0000" transparent opacity={circlePartsOpacity} />
         </mesh>
 
         <mesh
@@ -147,19 +139,8 @@ export function Scene() {
           onPointerUp={touchEndHandler}
           onPointerLeave={touchEndHandler}
         >
-          <circleGeometry
-            args={[
-              1.5,
-              32,
-              (-Math.PI / MathPIVision) * 8,
-              Math.PI / MathPIVision,
-            ]}
-          />
-          <meshStandardMaterial
-            color="#00ff00"
-            transparent
-            opacity={circlePartsOpacity}
-          />
+          <circleGeometry args={[1.5, 32, (-Math.PI / MathPIVision) * 8, Math.PI / MathPIVision]} />
+          <meshStandardMaterial color="#00ff00" transparent opacity={circlePartsOpacity} />
         </mesh>
 
         <mesh
@@ -167,14 +148,8 @@ export function Scene() {
           onPointerUp={touchEndHandler}
           onPointerLeave={touchEndHandler}
         >
-          <circleGeometry
-            args={[1.5, 32, -Math.PI / MathPIVision, Math.PI / MathPIVision]}
-          />
-          <meshStandardMaterial
-            color="#0000ff"
-            transparent
-            opacity={circlePartsOpacity}
-          />
+          <circleGeometry args={[1.5, 32, -Math.PI / MathPIVision, Math.PI / MathPIVision]} />
+          <meshStandardMaterial color="#0000ff" transparent opacity={circlePartsOpacity} />
         </mesh>
 
         <mesh
@@ -182,19 +157,8 @@ export function Scene() {
           onPointerUp={touchEndHandler}
           onPointerLeave={touchEndHandler}
         >
-          <circleGeometry
-            args={[
-              1.5,
-              32,
-              (-Math.PI / MathPIVision) * 2,
-              Math.PI / MathPIVision,
-            ]}
-          />
-          <meshStandardMaterial
-            color="#00b7ff"
-            transparent
-            opacity={circlePartsOpacity}
-          />
+          <circleGeometry args={[1.5, 32, (-Math.PI / MathPIVision) * 2, Math.PI / MathPIVision]} />
+          <meshStandardMaterial color="#00b7ff" transparent opacity={circlePartsOpacity} />
         </mesh>
 
         <mesh
@@ -202,19 +166,8 @@ export function Scene() {
           onPointerUp={touchEndHandler}
           onPointerLeave={touchEndHandler}
         >
-          <circleGeometry
-            args={[
-              1.5,
-              32,
-              (-Math.PI / MathPIVision) * 3,
-              Math.PI / MathPIVision,
-            ]}
-          />
-          <meshStandardMaterial
-            color="#ff00ff"
-            transparent
-            opacity={circlePartsOpacity}
-          />
+          <circleGeometry args={[1.5, 32, (-Math.PI / MathPIVision) * 3, Math.PI / MathPIVision]} />
+          <meshStandardMaterial color="#ff00ff" transparent opacity={circlePartsOpacity} />
         </mesh>
 
         <mesh
@@ -222,19 +175,8 @@ export function Scene() {
           onPointerUp={touchEndHandler}
           onPointerLeave={touchEndHandler}
         >
-          <circleGeometry
-            args={[
-              1.5,
-              32,
-              (-Math.PI / MathPIVision) * 4,
-              Math.PI / MathPIVision,
-            ]}
-          />
-          <meshStandardMaterial
-            color="#00ffff"
-            transparent
-            opacity={circlePartsOpacity}
-          />
+          <circleGeometry args={[1.5, 32, (-Math.PI / MathPIVision) * 4, Math.PI / MathPIVision]} />
+          <meshStandardMaterial color="#00ffff" transparent opacity={circlePartsOpacity} />
         </mesh>
 
         <mesh
@@ -242,19 +184,8 @@ export function Scene() {
           onPointerUp={touchEndHandler}
           onPointerLeave={touchEndHandler}
         >
-          <circleGeometry
-            args={[
-              1.5,
-              32,
-              (-Math.PI / MathPIVision) * 5,
-              Math.PI / MathPIVision,
-            ]}
-          />
-          <meshStandardMaterial
-            color="#ff8000"
-            transparent
-            opacity={circlePartsOpacity}
-          />
+          <circleGeometry args={[1.5, 32, (-Math.PI / MathPIVision) * 5, Math.PI / MathPIVision]} />
+          <meshStandardMaterial color="#ff8000" transparent opacity={circlePartsOpacity} />
         </mesh>
 
         <mesh
@@ -262,19 +193,8 @@ export function Scene() {
           onPointerUp={touchEndHandler}
           onPointerLeave={touchEndHandler}
         >
-          <circleGeometry
-            args={[
-              1.5,
-              32,
-              (-Math.PI / MathPIVision) * 6,
-              Math.PI / MathPIVision,
-            ]}
-          />
-          <meshStandardMaterial
-            color="#8000ff"
-            transparent
-            opacity={circlePartsOpacity}
-          />
+          <circleGeometry args={[1.5, 32, (-Math.PI / MathPIVision) * 6, Math.PI / MathPIVision]} />
+          <meshStandardMaterial color="#8000ff" transparent opacity={circlePartsOpacity} />
         </mesh>
 
         <mesh
@@ -283,17 +203,13 @@ export function Scene() {
           onPointerLeave={touchEndHandler}
         >
           <circleGeometry args={[0.7, 32, 32]} />
-          <meshStandardMaterial
-            color="black"
-            transparent
-            opacity={circlePartsOpacity}
-          />
+          <meshStandardMaterial color="black" transparent opacity={circlePartsOpacity} />
         </mesh>
       </group>
 
       {/* TODO: fix flickering for points */}
       {Array.from({ length: visibleFlyingPoints }).map((_, index) => (
-        <VisibleFlyingPoint key={index} item={index} />
+        <VisibleFlyingPoint key={index} item={index} incrementValue={incrementValue} />
       ))}
     </>
   );
@@ -301,7 +217,7 @@ export function Scene() {
 
 const AnimatedText = animated(Text);
 
-export function VisibleFlyingPoint({ item }: { item: number }) {
+export function VisibleFlyingPoint({ item, incrementValue }: { item: number; incrementValue: number }) {
   const fontProps = {
     fontSize: 0.35,
     font: "./Roboto-Bold.ttf",
@@ -336,7 +252,7 @@ export function VisibleFlyingPoint({ item }: { item: number }) {
         anchorX="center"
         anchorY="middle"
       >
-        2
+        {incrementValue}
       </AnimatedText>
     </animated.mesh>
   );
