@@ -29,6 +29,8 @@ function App() {
   const increment = () => {
     if (!user) return;
 
+    setCount((prev) => prev + incrementValue);
+
     sendJsonMessage({
       action: "increaseCounterHandler",
       id: user.id,
