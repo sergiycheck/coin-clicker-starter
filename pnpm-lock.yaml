@@ -46,6 +46,9 @@ devDependencies:
   '@types/react-dom':
     specifier: ^18.2.17
     version: 18.2.18
+  '@types/telegram-web-app':
+    specifier: ^7.0.0
+    version: 7.0.0
   '@types/three':
     specifier: ^0.160.0
     version: 0.160.0
@@ -1222,6 +1225,10 @@ packages:
 
   /@types/stats.js@0.17.3:
     resolution: {integrity: sha512-pXNfAD3KHOdif9EQXZ9deK82HVNaXP5ZIF5RP2QG6OQFNTaY2YIetfrE9t528vEreGQvEPRDDc8muaoYeK0SxQ==}
+
+  /@types/telegram-web-app@7.0.0:
+    resolution: {integrity: sha512-BgR/Q8id0c8/lq/4XUMJ2Jw6czioKbLbNqURr62wysch5yJcITHZQWKrr6KyPDrO+2cCTWwCJopSp3FY37N/6w==}
+    dev: true
 
   /@types/three@0.160.0:
     resolution: {integrity: sha512-jWlbUBovicUKaOYxzgkLlhkiEQJkhCVvg4W2IYD2trqD2om3VK4DGLpHH5zQHNr7RweZK/5re/4IVhbhvxbV9w==}

@@ -21,6 +21,8 @@ function App() {
   const incrementValue = 20;
   const userName = "userName1";
 
+  console.log(window.Telegram);
+
   const [user, setUser] = useState<User>();
   const [count, setCount] = useState(0);
 
