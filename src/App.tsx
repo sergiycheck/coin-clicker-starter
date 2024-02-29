@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Canvas } from "@react-three/fiber";
 import useWebSocket from "react-use-websocket";
 
@@ -19,12 +19,30 @@ function App() {
   const place = 161_270;
   const rang = "Silver";
   const incrementValue = 20;
-  const userName = "userName1";
+
+  const [dynamoDbUserName, setDynamoDbUsername] = useState("");
+
+  const getUserNameFromUrlParams = useCallback(() => {
+    const url = new URL(window.location.href);
+    const userName = url.searchParams.get("userName");
+    const chatId = url.searchParams.get("chatId");
+
+    if (!userName || !chatId) return null;
+
+    return `${userName}-${chatId}`;
+  }, []);
+
+  React.useEffect(() => {
+    const userNameFromParams = getUserNameFromUrlParams();
+    if (!userNameFromParams) return;
+
+    setDynamoDbUsername(userNameFromParams);
+  }, [getUserNameFromUrlParams]);
 
   const [user, setUser] = useState<User>();
   const [count, setCount] = useState(0);
 
-  const { sendMessage, sendJsonMessage, lastJsonMessage } = useWebSocket(socketUrl);
+  const { sendJsonMessage, lastJsonMessage } = useWebSocket(socketUrl);
 
   const increment = () => {
     if (!user) return;
@@ -43,8 +61,20 @@ function App() {
 
     switch (jsonMessage?.action) {
       case "getUserByUserName":
+        if (!jsonMessage.user) {
+          const userNameFromParams = getUserNameFromUrlParams();
+          sendJsonMessage({ action: "createUserHandler", userName: userNameFromParams });
+          return;
+        }
+
         setUser(jsonMessage?.user);
         setCount(jsonMessage?.user.coinCounter);
+        break;
+
+      case "createUser":
+        setUser(jsonMessage?.user);
+        setCount(jsonMessage?.user.coinCounter);
+
         break;
 
       case "increaseCounter":
@@ -54,13 +84,13 @@ function App() {
       default:
         break;
     }
-  }, [lastJsonMessage]);
+  }, [lastJsonMessage, getUserNameFromUrlParams, sendJsonMessage]);
 
   useEffect(() => {
-    if (!user) {
-      sendJsonMessage({ action: "getUserHandler", userName });
+    if (!user && dynamoDbUserName) {
+      sendJsonMessage({ action: "getUserHandler", userName: dynamoDbUserName });
     }
-  }, [user, sendJsonMessage, sendMessage]);
+  }, [user, sendJsonMessage, dynamoDbUserName]);
 
   return (
     <div className="flex flex-col h-full relative select-none ">
