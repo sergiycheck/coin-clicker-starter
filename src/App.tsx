@@ -19,6 +19,7 @@ function App() {
   const place = 161_270;
   const rang = "Silver";
   const incrementValue = 20;
+  const app = window.Telegram.WebApp;
 
   const [dynamoDbUserName, setDynamoDbUsername] = useState("");
 
@@ -89,8 +90,10 @@ function App() {
   useEffect(() => {
     if (!user && dynamoDbUserName) {
       sendJsonMessage({ action: "getUserHandler", userName: dynamoDbUserName });
+    } else {
+      app.ready();
     }
-  }, [user, sendJsonMessage, dynamoDbUserName]);
+  }, [user, sendJsonMessage, dynamoDbUserName, app]);
 
   return (
     <div className="flex flex-col h-full relative select-none ">
