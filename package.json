@@ -14,6 +14,7 @@
     "@react-three/cannon": "^6.6.0",
     "@react-three/drei": "^9.93.1",
     "@react-three/fiber": "^8.15.14",
+    "eruda": "^3.0.1",
     "framer-motion": "^10.18.0",
     "framer-motion-3d": "^10.18.0",
     "react": "^18.2.0",
