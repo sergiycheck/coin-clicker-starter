@@ -17,6 +17,9 @@ dependencies:
   '@react-three/fiber':
     specifier: ^8.15.14
     version: 8.15.14(react-dom@18.2.0)(react@18.2.0)(three@0.160.0)
+  eruda:
+    specifier: ^3.0.1
+    version: 3.0.1
   framer-motion:
     specifier: ^10.18.0
     version: 10.18.0(react-dom@18.2.0)(react@18.2.0)
@@ -1794,6 +1797,10 @@ packages:
     dependencies:
       is-arrayish: 0.2.1
     dev: true
+
+  /eruda@3.0.1:
+    resolution: {integrity: sha512-6q1Xdwga4JTr1mKSW4mzuWSSbmXgqpm/8Wa1QGFGfCWRjC0bCQjbS4u06M1te1moucIS3hBLlbSTPWYH2W0qbQ==}
+    dev: false
 
   /esbuild@0.19.11:
     resolution: {integrity: sha512-HJ96Hev2hX/6i5cDVwcqiJBBtuo9+FeIJOtZ9W1kA5M6AMJRHUZlpYZ1/SbEwtO0ioNAW8rUooVpC/WehY2SfA==}
