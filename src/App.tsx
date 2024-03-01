@@ -29,7 +29,8 @@ type UserData = {
   hash: string;
 };
 
-function parseInitData(initData: string): UserData {
+function parseInitData(initData: string): UserData | null {
+  if (!initData) return null;
   const data = initData.split("&").reduce((acc, item) => {
     const [key, value] = item.split("=");
 
@@ -82,6 +83,7 @@ function App() {
       app.ready();
       app.expand();
       const initDataParsed = parseInitData(app.initData);
+      if (!initDataParsed) return;
       setTelegramUserData(initDataParsed);
       setUserNameWithChatId(`${initDataParsed.user.username}-${initDataParsed.user.id}`);
     }
