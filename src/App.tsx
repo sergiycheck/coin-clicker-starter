@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Canvas } from "@react-three/fiber";
 import useWebSocket from "react-use-websocket";
 
@@ -15,65 +15,95 @@ type User = {
 
 const socketUrl = "wss://6ri9wdx49c.execute-api.us-east-1.amazonaws.com/dev";
 
+type UserData = {
+  query_id: string;
+  user: {
+    id: number;
+    first_name: string;
+    last_name: string;
+    username: string;
+    language_code: string;
+    allows_write_to_pm: boolean;
+  };
+  auth_date: number;
+  hash: string;
+};
+
+function parseInitData(initData: string): UserData {
+  const data = initData.split("&").reduce((acc, item) => {
+    const [key, value] = item.split("=");
+
+    let valueDecoded = decodeURIComponent(value);
+    try {
+      valueDecoded = JSON.parse(valueDecoded);
+    } catch (err) {
+      null;
+    } finally {
+      acc[key] = valueDecoded;
+    }
+
+    return acc;
+  }, {}) as UserData;
+
+  return data;
+}
+
 function App() {
   const place = 161_270;
   const rang = "Silver";
   const incrementValue = 20;
-  const app = window.Telegram.WebApp;
 
-  const [dynamoDbUserName, setDynamoDbUsername] = useState("");
+  const app = useMemo(() => window.Telegram.WebApp, []);
 
-  const getUserNameFromUrlParams = useCallback(() => {
-    const url = new URL(window.location.href);
-    const userName = url.searchParams.get("userName");
-    const chatId = url.searchParams.get("chatId");
+  const [telegramUserData, setTelegramUserData] = useState<UserData | null>(null);
+  const [userFromDynamoDb, setUserFromDynamoDb] = useState<User | null>(null);
+  const [userNameWithChatId, setUserNameWithChatId] = useState<string | null>(null);
 
-    if (!userName || !chatId) return null;
-
-    return `${userName}-${chatId}`;
-  }, []);
-
-  React.useEffect(() => {
-    const userNameFromParams = getUserNameFromUrlParams();
-    if (!userNameFromParams) return;
-
-    setDynamoDbUsername(userNameFromParams);
-  }, [getUserNameFromUrlParams]);
-
-  const [user, setUser] = useState<User>();
   const [count, setCount] = useState(0);
 
   const { sendJsonMessage, lastJsonMessage } = useWebSocket(socketUrl);
 
   const increment = () => {
-    if (!user) return;
+    if (!userFromDynamoDb) return;
 
     setCount((prev) => prev + incrementValue);
 
     sendJsonMessage({
       action: "increaseCounterHandler",
-      id: user.id,
+      id: userFromDynamoDb.id,
       incrementValue,
     });
   };
 
   useEffect(() => {
+    if (userNameWithChatId) {
+      sendJsonMessage({ action: "getUserHandler", userName: userNameWithChatId });
+    } else {
+      app.ready();
+      app.expand();
+      const initDataParsed = parseInitData(app.initData);
+      setTelegramUserData(initDataParsed);
+      setUserNameWithChatId(`${initDataParsed.user.username}-${initDataParsed.user.id}`);
+    }
+  }, [userNameWithChatId, app, sendJsonMessage]);
+
+  useEffect(() => {
     const jsonMessage = lastJsonMessage as any;
+    if (!userNameWithChatId) return;
 
     switch (jsonMessage?.action) {
       case "getUserByUserName":
         if (!jsonMessage.user) {
-          const userNameFromParams = getUserNameFromUrlParams();
-          sendJsonMessage({ action: "createUserHandler", userName: userNameFromParams });
+          sendJsonMessage({ action: "createUserHandler", userName: userNameWithChatId });
           return;
         }
 
-        setUser(jsonMessage?.user);
+        setUserFromDynamoDb(jsonMessage?.user);
         setCount(jsonMessage?.user.coinCounter);
         break;
 
       case "createUser":
-        setUser(jsonMessage?.user);
+        setUserFromDynamoDb(jsonMessage?.user);
         setCount(jsonMessage?.user.coinCounter);
 
         break;
@@ -85,17 +115,7 @@ function App() {
       default:
         break;
     }
-  }, [lastJsonMessage, getUserNameFromUrlParams, sendJsonMessage]);
-
-  useEffect(() => {
-    if (!user && dynamoDbUserName) {
-      sendJsonMessage({ action: "getUserHandler", userName: dynamoDbUserName });
-    } else {
-      app.ready();
-      app.expand();
-      console.log("initData", app.initData);
-    }
-  }, [user, sendJsonMessage, dynamoDbUserName, app]);
+  }, [lastJsonMessage, sendJsonMessage, userNameWithChatId]);
 
   return (
     <div className="flex flex-col h-full relative select-none ">
