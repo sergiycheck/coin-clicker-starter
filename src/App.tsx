@@ -92,6 +92,8 @@ function App() {
       sendJsonMessage({ action: "getUserHandler", userName: dynamoDbUserName });
     } else {
       app.ready();
+      app.expand();
+      console.log("initData", app.initData);
     }
   }, [user, sendJsonMessage, dynamoDbUserName, app]);
 
