@@ -163,7 +163,7 @@ function App() {
   }, [lastJsonMessage, sendJsonMessage, userNameWithChatId, setCountToSet]);
 
   return (
-    <div className="flex flex-col h-full relative select-none ">
+    <div className="flex flex-col h-screen relative select-none pt-[16px] pb-[20px]">
       {/* gradient background */}
       <div
         className="absolute top-0 left-0 right-0 bottom-0  overflow-hidden"
@@ -228,9 +228,10 @@ function App() {
       {/* footer */}
       <div
         className="absolute bottom-0 w-full max-w-3xl translate-x-[-50%] left-[50%] 
-         flex flex-col space-y-3 p-2 z-10"
+         flex flex-col space-y-2 p-2 z-10"
       >
-        <div className="max-w-4xl w-full mx-auto flex items-center justify-between p-2 space-x-4">
+        {/* energy and progress bar */}
+        <div className="max-w-4xl w-full mx-auto flex items-center justify-between space-x-4">
           {/* energy */}
           <div className="flex flex-col">
             <div className="flex space-x-2 w-fit items-center">
@@ -247,6 +248,7 @@ function App() {
             <div className="w-full h-3.5 rounded-full bg-gradient-to-r from-blue-400 to-blue-50"></div>
           </div>
         </div>
+
         {/* frend earn boosts */}
         <div
           className="grid grid-cols-3 space-x-4 p-3
