@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useCallback } from "react";
 import { ThreeEvent, useThree } from "@react-three/fiber";
 import { useTexture, Text } from "@react-three/drei";
 import { useSpring, animated } from "@react-spring/three";
@@ -28,25 +28,29 @@ export function Scene({ incrementValue }: { incrementValue: number }) {
 
   const { increment } = useContext(CounterContext);
 
-  const touchEndHandler = () => {
+  const touchEndHandler = useCallback(() => {
     api.start({
       position: [0, -0.7, 0],
       rotation: [0, 0, 0],
     });
-  };
+  }, [api]);
 
-  const setFlyingPointsHandler = () => {
+  const setFlyingPointsHandler = useCallback(() => {
     setVisibleFlyingPoints((prev) => prev + 1);
-  };
+  }, []);
 
-  const wrapWithTouchEndHandler = (fn: (event: ThreeEvent<PointerEvent>) => void) => {
-    return (event: ThreeEvent<PointerEvent>) => {
-      increment();
-      touchEndHandler();
-      setFlyingPointsHandler();
-      fn(event);
-    };
-  };
+  const wrapWithTouchEndHandler = useCallback(
+    (fn: (event: ThreeEvent<PointerEvent>) => void) => {
+      return (event: ThreeEvent<PointerEvent>) => {
+        event.stopPropagation();
+        increment();
+        touchEndHandler();
+        setFlyingPointsHandler();
+        fn(event);
+      };
+    },
+    [increment, touchEndHandler, setFlyingPointsHandler]
+  );
 
   const changableRotationConstant = Math.PI / 20;
 
@@ -196,18 +200,18 @@ export function Scene({ incrementValue }: { incrementValue: number }) {
           <circleGeometry args={[1.5, 32, (-Math.PI / MathPIVision) * 6, Math.PI / MathPIVision]} />
           <meshStandardMaterial color="#8000ff" transparent opacity={circlePartsOpacity} />
         </mesh>
-
-        <mesh
-          onPointerDown={wrapWithTouchEndHandler(middleCenterTouchStartHandler)}
-          onPointerUp={touchEndHandler}
-          onPointerLeave={touchEndHandler}
-        >
-          <circleGeometry args={[0.7, 32, 32]} />
-          <meshStandardMaterial color="black" transparent opacity={circlePartsOpacity} />
-        </mesh>
       </group>
 
-      {/* TODO: fix flickering for points */}
+      <mesh
+        position={[0, -0.6, 1]}
+        onPointerDown={wrapWithTouchEndHandler(middleCenterTouchStartHandler)}
+        onPointerUp={touchEndHandler}
+        onPointerLeave={touchEndHandler}
+      >
+        <circleGeometry args={[0.6, 32, 32]} />
+        <meshStandardMaterial color="black" transparent opacity={circlePartsOpacity} />
+      </mesh>
+
       {Array.from({ length: visibleFlyingPoints }).map((_, index) => (
         <VisibleFlyingPoint key={index} item={index} incrementValue={incrementValue} />
       ))}
@@ -217,7 +221,13 @@ export function Scene({ incrementValue }: { incrementValue: number }) {
 
 const AnimatedText = animated(Text);
 
-export function VisibleFlyingPoint({ item, incrementValue }: { item: number; incrementValue: number }) {
+export function VisibleFlyingPoint({
+  item,
+  incrementValue,
+}: {
+  item: number;
+  incrementValue: number;
+}) {
   const fontProps = {
     fontSize: 0.35,
     font: "./Roboto-Bold.ttf",
