@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Canvas } from "@react-three/fiber";
 import useWebSocket from "react-use-websocket";
 
@@ -70,7 +70,7 @@ function App() {
           clearInterval(intervalId);
           return prev;
         }
-        return prev + 2;
+        return prev + 1;
       });
     }, 10);
 
@@ -81,7 +81,7 @@ function App() {
 
   const { sendJsonMessage, lastJsonMessage } = useWebSocket(socketUrl);
 
-  const increment = () => {
+  const increment = useCallback(() => {
     if (!userFromDynamoDb) return;
 
     sendJsonMessage({
@@ -89,7 +89,7 @@ function App() {
       id: userFromDynamoDb.id,
       incrementValue,
     });
-  };
+  }, [incrementValue, sendJsonMessage, userFromDynamoDb]);
 
   useEffect(() => {
     if (userNameWithChatId) {
@@ -101,7 +101,7 @@ function App() {
 
       // used for development
       // const initData =
-      // "query_id=AAGpQR4ZAAAAAKlBHhlZ6IeH&user=%7B%22id%22%3A421413289%2C%22first_name%22%3A%22Serhii%22%2C%22last_name%22%3A%22Kuzmych%22%2C%22username%22%3A%22Sieroga%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1709999012&hash=5abe0c5489ceb1f36780b676728b60f3d231040c04ed4f5ed1fa441278f8355b";
+      //   "query_id=AAGpQR4ZAAAAAKlBHhlZ6IeH&user=%7B%22id%22%3A421413289%2C%22first_name%22%3A%22Serhii%22%2C%22last_name%22%3A%22Kuzmych%22%2C%22username%22%3A%22Sieroga%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1709999012&hash=5abe0c5489ceb1f36780b676728b60f3d231040c04ed4f5ed1fa441278f8355b";
       // const initDataParsed = parseInitData(initData);
 
       if (!initDataParsed) return;
