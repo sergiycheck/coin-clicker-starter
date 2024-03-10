@@ -83,6 +83,10 @@ function App() {
   const [countToSet, setCountToSet] = useState(0);
 
   useEffect(() => {
+    window.scrollTo(0, document.body.scrollHeight);
+  }, []);
+
+  useEffect(() => {
     if (countToSet === 0) return;
     const intervalId = setInterval(() => {
       setCount((prev) => {
