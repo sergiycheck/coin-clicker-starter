@@ -183,12 +183,7 @@ function App() {
       <div className="absolute translate-x-[-50%] left-[50%] max-w-3xl w-full p-2 z-10">
         <div className="flex flex-col space-y-2">
           {/* join squad */}
-          <div
-            className="rounded bg-zinc-600/50 p-2 flex justify-center items-center "
-            onClick={() => {
-              window.location.href = externalLink.joinSquad();
-            }}
-          >
+          <div className="rounded bg-zinc-600/50 p-2 flex justify-center items-center ">
             <div className="flex items-center space-x-1">
               <p className="text-md">Join squad</p>
               <FaChevronRight className="text-sm  text-gray-400" />
@@ -206,13 +201,7 @@ function App() {
             </div>
 
             {/* position and league */}
-            <div
-              className="flex justify-center items-center space-x-3 z-10"
-              onClick={() => {
-                console.log("league");
-                window.location.href = externalLink.league();
-              }}
-            >
+            <div className="flex justify-center items-center space-x-3 z-10">
               <div className="flex items-center justify-center relative">
                 <img src="/icons/left-wreath.svg" alt="left wreath" className="w-[30px]" />
                 <div>{place.toLocaleString("en-US").concat("th")}</div>
@@ -259,12 +248,7 @@ function App() {
               bg-zinc-600/50 ring-1 ring-zinc-500/50 rounded"
         >
           {/* frens */}
-          <div
-            className="flex items-center space-x-3 justify-center relative z-10"
-            onClick={() => {
-              window.location.href = externalLink.frens();
-            }}
-          >
+          <div className="flex items-center space-x-3 justify-center relative z-10">
             <div className="flex flex-col items-center gap-1 text-center">
               <img src="/icons/box.png" alt="Invite frens" width={27} height={27} />
               <p className="text-xs">Frens</p>
@@ -273,12 +257,7 @@ function App() {
           </div>
 
           {/* Earn */}
-          <div
-            className="flex items-center space-x-3 justify-center relative z-10"
-            onClick={() => {
-              window.location.href = externalLink.earn();
-            }}
-          >
+          <div className="flex items-center space-x-3 justify-center relative z-10">
             <div className="flex flex-col items-center gap-1">
               <img src="/icons/minicoin.svg" alt="Earn notecoin" width={27} height={27} />
               <p className="text-xs">Earn</p>
@@ -287,12 +266,7 @@ function App() {
           </div>
 
           {/* Boosts */}
-          <div
-            className="flex flex-col items-center gap-1 text-center z-10"
-            onClick={() => {
-              window.location.href = externalLink.boosts();
-            }}
-          >
+          <div className="flex flex-col items-center gap-1 text-center z-10">
             <p className="text-md w-[27px] h-[27px]">🚀</p>
             <p className="text-xs">Boosts</p>
           </div>
