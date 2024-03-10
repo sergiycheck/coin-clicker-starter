@@ -15,6 +15,25 @@ type User = {
 
 const socketUrl = "wss://6ri9wdx49c.execute-api.us-east-1.amazonaws.com/dev";
 
+const externalLink = {
+  href: "https://clicker.joincommunity.xyz",
+  joinSquad() {
+    return `${this.href}/clicker/league/squad`;
+  },
+  league() {
+    return `${this.href}/clicker/league/5/user`;
+  },
+  frens() {
+    return `${this.href}/clicker/frens`;
+  },
+  earn() {
+    return `${this.href}/clicker/earn`;
+  },
+  boosts() {
+    return `${this.href}/clicker/boosts`;
+  },
+};
+
 type UserData = {
   query_id: string;
   user: {
@@ -50,8 +69,8 @@ function parseInitData(initData: string): UserData | null {
 }
 
 function App() {
-  const place = 161_270;
-  const rang = "Silver";
+  const place = 5;
+  const rang = "Diamond";
   const incrementValue = 20;
 
   const app = useMemo(() => window.Telegram.WebApp, []);
@@ -64,9 +83,11 @@ function App() {
   const [countToSet, setCountToSet] = useState(0);
 
   useEffect(() => {
+    if (countToSet === 0) return;
     const intervalId = setInterval(() => {
       setCount((prev) => {
         if (prev == countToSet) {
+          setCountToSet(0);
           clearInterval(intervalId);
           return prev;
         }
@@ -97,12 +118,12 @@ function App() {
     } else {
       app.ready();
       app.expand();
-      const initDataParsed = parseInitData(app.initData);
+      // const initDataParsed = parseInitData(app.initData);
 
       // used for development
-      // const initData =
-      //   "query_id=AAGpQR4ZAAAAAKlBHhlZ6IeH&user=%7B%22id%22%3A421413289%2C%22first_name%22%3A%22Serhii%22%2C%22last_name%22%3A%22Kuzmych%22%2C%22username%22%3A%22Sieroga%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1709999012&hash=5abe0c5489ceb1f36780b676728b60f3d231040c04ed4f5ed1fa441278f8355b";
-      // const initDataParsed = parseInitData(initData);
+      const initData =
+        "query_id=AAGpQR4ZAAAAAKlBHhlZ6IeH&user=%7B%22id%22%3A421413289%2C%22first_name%22%3A%22Serhii%22%2C%22last_name%22%3A%22Kuzmych%22%2C%22username%22%3A%22Sieroga%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1709999012&hash=5abe0c5489ceb1f36780b676728b60f3d231040c04ed4f5ed1fa441278f8355b";
+      const initDataParsed = parseInitData(initData);
 
       if (!initDataParsed) return;
       setTelegramUserData(initDataParsed);
@@ -145,37 +166,49 @@ function App() {
     <div className="flex flex-col h-full relative select-none ">
       {/* gradient background */}
       <div
-        className="absolute top-0 left-0 right-0 bottom-0 
-        overflow-hidden"
+        className="absolute top-0 left-0 right-0 bottom-0  overflow-hidden"
         style={{
-          background: "linear-gradient(to top, #354175 -80%, #000 100%)",
+          backgroundImage: "url('/bg-diamond.png')",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          transform: "rotate(180deg)",
         }}
-      >
-        <div
-          className={`absolute h-[369px] w-[369px] translate-x-[-50%] left-[50%] 
-            translate-y-[-70%] top-[70%] rounded-full bg-[#757E9B] blur-[50px]`}
-        ></div>
-      </div>
+      ></div>
 
       {/* header */}
-      <div className="absolute translate-x-[-50%] left-[50%] max-w-3xl w-full p-2">
+      <div className="absolute translate-x-[-50%] left-[50%] max-w-3xl w-full p-2 z-10">
         <div className="flex flex-col space-y-2">
-          <div className="rounded bg-zinc-700 p-2 flex justify-center items-center ">
+          {/* join squad */}
+          <div
+            className="rounded bg-zinc-600/50 p-2 flex justify-center items-center "
+            onClick={() => {
+              window.location.href = externalLink.joinSquad();
+            }}
+          >
             <div className="flex items-center space-x-1">
               <p className="text-md">Join squad</p>
               <FaChevronRight className="text-sm  text-gray-400" />
             </div>
           </div>
 
+          {/* rank */}
           <div className="flex flex-col space-y-3">
+            {/* count of coins */}
             <div className="flex justify-center items-center space-x-2">
-              <img src="/notecoin.png" alt="coin" width={30} height={30} />
+              <img src="/icons/minicoin.svg" alt="coin" width={30} height={30} />
               <h1 className="text-3xl font-bold text-center select-none pointer-events-none">
                 {count.toLocaleString("en-US")}
               </h1>
             </div>
 
-            <div className="flex justify-center items-center space-x-3">
+            {/* position and league */}
+            <div
+              className="flex justify-center items-center space-x-3 z-10"
+              onClick={() => {
+                console.log("league");
+                window.location.href = externalLink.league();
+              }}
+            >
               <div className="flex items-center justify-center relative">
                 <img src="/icons/left-wreath.svg" alt="left wreath" className="w-[30px]" />
                 <div>{place.toLocaleString("en-US").concat("th")}</div>
@@ -184,7 +217,7 @@ function App() {
 
               <p className="text-sm">·</p>
 
-              <img className="w-[20px]" src="/silver-goblet.png" alt="goblet" />
+              <img className="w-[20px]" src="/diamond.png" alt="goblet" />
               <p className="text-sm">{rang}</p>
               <FaChevronRight className="text-xs text-gray-600" />
             </div>
@@ -195,53 +228,68 @@ function App() {
       {/* footer */}
       <div
         className="absolute bottom-0 w-full max-w-3xl translate-x-[-50%] left-[50%] 
-         flex flex-col space-y-3 p-2"
+         flex flex-col space-y-3 p-2 z-10"
       >
-        <div className="max-w-4xl w-full mx-auto flex items-center justify-between p-2">
+        <div className="max-w-4xl w-full mx-auto flex items-center justify-between p-2 space-x-4">
+          {/* energy */}
           <div className="flex flex-col">
             <div className="flex space-x-2 w-fit items-center">
               <p className="text-3xl">⚡</p>
 
               <div className="flex flex-col space-y-0.5">
                 <p className="text-md">1500</p>
-                <p className="text-xs text-slate-600">/ 1500</p>
               </div>
             </div>
           </div>
 
-          <div
-            className="flex space-x-4 w-fit items-center p-3
-              bg-zinc-600/50 ring-1 ring-zinc-500/50 rounded"
-          >
-            <div className="flex items-center space-x-3">
-              <div className="flex flex-col items-center gap-1">
-                <p className="text-md w-[20px] h-[20px]">🐻</p>
-                <p className="text-xs">frens</p>
-              </div>
-              <div className="inline-block h-[30px] w-[0.3px] bg-gray-100/20 "></div>
-            </div>
-            <div className="flex items-center space-x-3">
-              <div className=" flex flex-col items-center gap-1">
-                <img src="/notecoin.png" alt="earn notecoin" width={20} height={20} />
-                <p className="text-xs">earn</p>
-              </div>
-              <div className="inline-block h-[30px] w-[0.3px] bg-gray-100/20 "></div>
-            </div>
-
-            <div className="flex flex-col items-center gap-1">
-              <p className="text-md w-[20px] h-[20px]">🚀</p>
-              <p className="text-xs">boosts</p>
-            </div>
+          {/* energy progress bar */}
+          <div className="w-full h-3.5">
+            <div className="w-full h-3.5 rounded-full bg-gradient-to-r from-blue-400 to-blue-50"></div>
           </div>
         </div>
-
-        <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+        {/* frend earn boosts */}
+        <div
+          className="grid grid-cols-3 space-x-4 p-3
+              bg-zinc-600/50 ring-1 ring-zinc-500/50 rounded"
+        >
+          {/* frens */}
           <div
-            className=" h-2.5 rounded-full bg-gradient-to-r from-zinc-800/5 to-zinc-300"
-            style={{
-              width: "100%",
+            className="flex items-center space-x-3 justify-center relative z-10"
+            onClick={() => {
+              window.location.href = externalLink.frens();
             }}
-          ></div>
+          >
+            <div className="flex flex-col items-center gap-1 text-center">
+              <img src="/icons/box.png" alt="Invite frens" width={27} height={27} />
+              <p className="text-xs">Frens</p>
+            </div>
+            <div className="inline-block h-[30px] w-[0.3px] bg-gray-100/20 absolute right-0"></div>
+          </div>
+
+          {/* Earn */}
+          <div
+            className="flex items-center space-x-3 justify-center relative z-10"
+            onClick={() => {
+              window.location.href = externalLink.earn();
+            }}
+          >
+            <div className="flex flex-col items-center gap-1">
+              <img src="/icons/minicoin.svg" alt="Earn notecoin" width={27} height={27} />
+              <p className="text-xs">Earn</p>
+            </div>
+            <div className="inline-block h-[30px] w-[0.3px] bg-gray-100/20 absolute right-0"></div>
+          </div>
+
+          {/* Boosts */}
+          <div
+            className="flex flex-col items-center gap-1 text-center z-10"
+            onClick={() => {
+              window.location.href = externalLink.boosts();
+            }}
+          >
+            <p className="text-md w-[27px] h-[27px]">🚀</p>
+            <p className="text-xs">Boosts</p>
+          </div>
         </div>
       </div>
 

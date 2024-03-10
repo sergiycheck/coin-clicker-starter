@@ -6,22 +6,16 @@ import { CounterContext } from "./counter-context";
 
 export function Scene({ incrementValue }: { incrementValue: number }) {
   const [springs, api] = useSpring(() => ({
-    position: [0, -0.9, 0.5],
+    position: [0, -0.7, -3.5],
     rotation: [0, 0, 0],
     config: { friction: 5, mass: 0.3 },
   }));
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      api.start({
-        position: [0, -0.7, 0],
-        rotation: [0, 0, 0],
-      });
-    }, 300);
-
-    return () => {
-      clearTimeout(timeout);
-    };
+    api.start({
+      position: [0, -0.7, 0],
+      rotation: [0, 0, 0],
+    });
   }, [api]);
 
   const [visibleFlyingPoints, setVisibleFlyingPoints] = useState<number>(1);
@@ -108,7 +102,7 @@ export function Scene({ incrementValue }: { incrementValue: number }) {
     });
   };
 
-  const colorMap = useTexture("/notecoin.png");
+  const colorMap = useTexture("/notecoin.avif");
 
   const circlePartsOpacity = 0;
   const MathPIVision = 4;
